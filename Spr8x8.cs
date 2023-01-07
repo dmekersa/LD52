@@ -22,6 +22,17 @@ namespace LD52
             colDest = pCol;
         }
 
+        public void SetMapPosition(int pRow, int pCol)
+        {
+            Position = new Vector2(pCol * 8, pRow * 8);
+            moving = false;
+            row = pRow;
+            col = pCol;
+            rowDest = pRow;
+            colDest = pCol;
+
+        }
+
         public void GoTo(int pRow, int pCol)
         {
             if (!moving)

@@ -13,7 +13,7 @@ public class Sprite80
     private Texture2D _maTexture;
     public Rectangle CollideBox { get { return _collideBox; } }
     // C'est de la merde ce système de position !!!
-    public Vector2 Position { get; private set; }
+    public Vector2 Position { get; protected set; }
     private Rectangle _collideBox;
     public bool Centered;
     public float Alpha = 1;

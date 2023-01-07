@@ -26,6 +26,11 @@ namespace LD52
             lstParticules = new List<Particule>();
         }
 
+        public void Reset()
+        {
+            lstParticules.Clear();
+        }
+
         public void AddParticule(int pSpr, float px, float py, float pVX, float pVY, double pLife)
         {
             Particule p = new Particule();

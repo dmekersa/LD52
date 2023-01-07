@@ -1,6 +1,7 @@
 ﻿using LD52;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Diagnostics;
 
 internal class SceneGameplay : Scene
@@ -28,14 +29,6 @@ internal class SceneGameplay : Scene
 
         Map = new int[MAPH, MAPW];
 
-        for (int l = 0 + 1; l < MAPH - 1; l++)
-        {
-            for (int c = 0 + 1; c < MAPW - 1; c++)
-            {
-                Map[l, c] = 1;
-            }
-        }
-
         _particleManager = new ParticleManager();
     }
 
@@ -43,7 +36,6 @@ internal class SceneGameplay : Scene
     {
         spr80 = new Sprite80();
         sprTruck = new Spr8x8(17, 0, 0);
-        sprTruck.GoTo(1, 0);
 
         _controlManager.SetMethodKey("right", Microsoft.Xna.Framework.Input.Keys.Right);
         _controlManager.SetMethodKey("left", Microsoft.Xna.Framework.Input.Keys.Left);
@@ -57,6 +49,20 @@ internal class SceneGameplay : Scene
 
     private void ResetGame()
     {
+        timerWin = 0;
+        sprTruck.SetMapPosition(0, 0);
+        sprTruck.GoTo(1, 0);
+
+        _particleManager.Reset();
+
+        for (int l = 0 + 1; l < MAPH - 1; l++)
+        {
+            for (int c = 0 + 1; c < MAPW - 1; c++)
+            {
+                Map[l, c] = 1;
+            }
+        }
+
         _harvested = 0;
         for (int l = 0 + 1; l < MAPH - 1; l++)
         {
@@ -136,12 +142,12 @@ internal class SceneGameplay : Scene
         {
             Map[sprTruck.row, sprTruck.col] = 0;
             _harvested++;
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 2; i++)
             {
                 int np = Utils.GetInt(33, 35);
-                float vx = (float)Utils.GetInt(-20, 20) / 50;
-                float vy = (float)Utils.GetInt(-20, 20) / 50;
-                double life = (double)Utils.GetInt(5, 10) / 10;
+                float vx = (float)Utils.GetInt(-20, 20) / 70;
+                float vy = (float)Utils.GetInt(-20, 20) / 70;
+                double life = (double)Utils.GetInt(5, 10) / 20;
                 _particleManager.AddParticule(np, (sprTruck.col * 8) + 4, (sprTruck.row * 8) + 4, vx, vy, life);
             }
         }
@@ -151,6 +157,7 @@ internal class SceneGameplay : Scene
             timerWin -= gameTime.ElapsedGameTime.TotalSeconds;
             if (timerWin <= 0)
             {
+                ResetGame();
                 _sceneService.ChangeScene(SceneManager.sceneType.Win);
             }
         }
@@ -160,10 +167,13 @@ internal class SceneGameplay : Scene
             timerWin = 2;
             for (int i = 0; i < 100; i++)
             {
-                float vx = (float)Utils.GetInt(-20, 20) / 5;
-                float vy = (float)Utils.GetInt(-20, 20) / 5;
+                float vx = (float)Utils.GetInt(-50, 50) / 20;
+                float vy = (float)Utils.GetInt(-50, 50) / 20;
+                float norm = (float)Math.Sqrt(vx * vx + vy * vy);
+                //                vx /= norm / 2;
+                //                vy /= norm / 2;
                 double life = 10;
-                _particleManager.AddParticule(40, (sprTruck.Position.X) + 4, (sprTruck.Position.Y) + 4, vx, vy, life);
+                _particleManager.AddParticule(40, (sprTruck.Position.X) + 4 + Utils.GetInt(-2, 2), (sprTruck.Position.Y) + 4 + Utils.GetInt(-2, 2), vx, vy, life);
             }
         }
 

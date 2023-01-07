@@ -20,7 +20,7 @@ internal class SceneWin : Scene
 
         if (_controlManager.Pressed("play"))
         {
-            _sceneService.ChangeScene(SceneManager.sceneType.Gameplay);
+            _sceneService.ChangeScene(SceneManager.sceneType.Menu);
         }
     }
 
