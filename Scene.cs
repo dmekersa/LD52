@@ -2,6 +2,7 @@
 
 public class Scene
 {
+    protected SceneService _sceneService;
     protected Gamecodeur.GCControlManager _controlManager;
     public bool loaded { get; private set; }
 
@@ -13,11 +14,17 @@ public class Scene
     public virtual void Load()
     {
         loaded = true;
+        _sceneService = ServiceLocator.GetService<SceneService>();
     }
 
     public virtual void Update(GameTime gameTime)
     {
         _controlManager.Update();
+    }
+
+    public virtual void DrawUI()
+    {
+
     }
 
     public virtual void Draw()

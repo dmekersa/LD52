@@ -25,7 +25,6 @@ namespace LD52
 
             Gamecodeur.GCControlManager controlManager = new Gamecodeur.GCControlManager();
             ServiceLocator.RegisterService<Gamecodeur.GCControlManager>(controlManager);
-
         }
 
         protected override void Initialize()
@@ -52,7 +51,6 @@ namespace LD52
             ServiceLocator.RegisterService<TileSets>(_tileSets);
 
             _sceneManager = new SceneManager();
-
             ServiceLocator.RegisterService((SceneService)_sceneManager);
 
             _sceneManager.ChangeScene(SceneManager.sceneType.Menu);
@@ -104,6 +102,10 @@ namespace LD52
 
             _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp);
             _spriteBatch.Draw(_renderTarget, dst, Color.White);
+            _spriteBatch.End();
+
+            _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp);
+            _sceneManager.DrawUI();
             _spriteBatch.End();
 
             base.Draw(gameTime);

@@ -2,10 +2,13 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-internal class SceneMenu : Scene
+internal class SceneWin : Scene
 {
+    private SceneService _sceneService;
+
     public override void Load()
     {
+        _sceneService = ServiceLocator.GetService<SceneService>();
         _controlManager.SetMethodKey("play", Keys.Space);
 
         base.Load();
@@ -32,7 +35,7 @@ internal class SceneMenu : Scene
 
         if (spriteBatch != null && fontManager != null)
         {
-            spriteBatch.DrawString(fontManager.getFont(FontManager.fontStyle.title), "LD52", new Vector2(0, 0), Color.Yellow);
+            spriteBatch.DrawString(fontManager.getFont(FontManager.fontStyle.title), "YOU WON", new Vector2(0, 0), Color.Yellow);
         }
 
     }
