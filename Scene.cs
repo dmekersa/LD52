@@ -11,6 +11,11 @@ public class Scene
         _controlManager = ServiceLocator.GetService<Gamecodeur.GCControlManager>();
     }
 
+    public virtual void Focus()
+    {
+
+    }
+
     public virtual void Load()
     {
         loaded = true;

@@ -17,9 +17,12 @@ public class Sprite80
     private Rectangle _collideBox;
     public bool Centered;
     public float Alpha = 1;
+    public bool FlipX;
+    public int Wide = 1;
 
     public Sprite80() : this(0, new Vector2(0, 0))
     {
+        FlipX = false;
         Centered = false;
     }
 
@@ -63,7 +66,7 @@ public class Sprite80
         UpdateCollideBox();
     }
 
-    public virtual void Update()
+    public virtual void Update(GameTime gametime)
     {
         if (Alpha > 1)
             Alpha = 1;
@@ -102,8 +105,14 @@ public class Sprite80
             xx -= 4;
             yy -= 4;
         }
-        rect.Width = 8;
+        rect.Width = 8 * Wide;
         rect.Height = 8;
-        spriteBatch.Draw(_maTexture, new Vector2(xx, yy), rect, Color.White * Alpha);
+        SpriteEffects sprEffect = SpriteEffects.None;
+        if (FlipX)
+        {
+            sprEffect = SpriteEffects.FlipHorizontally;
+            xx -= (8 * (Wide - 1));
+        }
+        spriteBatch.Draw(_maTexture, new Vector2(xx, yy), rect, Color.White * Alpha, 0, new Vector2(0, 0), 1, sprEffect, 0);
     }
 }

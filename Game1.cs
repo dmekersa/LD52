@@ -15,6 +15,7 @@ namespace LD52
         private const int ScreenHeight = 480;
         private RenderTarget2D _renderTarget;
         private TileSets _tileSets;
+        private double _fps;
 
         public Game1()
         {
@@ -63,6 +64,9 @@ namespace LD52
 
             // TODO: Add your update logic here
 
+            if (GameState.camShake > 0)
+                GameState.camShake -= gameTime.ElapsedGameTime.TotalSeconds;
+
             _sceneManager.Update(gameTime);
 
             base.Update(gameTime);
@@ -98,6 +102,12 @@ namespace LD52
                 }
             }
 
+            if (GameState.camShake > 0)
+            {
+                marginH += Utils.GetInt(-6, 6);
+                marginV += Utils.GetInt(-6, 6);
+            }
+
             Rectangle dst = new Rectangle(marginH, marginV, (int)(CANVAS.Width * ratio), (int)(CANVAS.Height * ratio));
 
             _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp);
@@ -106,6 +116,13 @@ namespace LD52
 
             _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp);
             _sceneManager.DrawUI();
+
+            _fps = (1 / gameTime.ElapsedGameTime.TotalSeconds);
+            SpriteBatch spriteBatch = ServiceLocator.GetService<SpriteBatch>();
+            FontManager fontManager = ServiceLocator.GetService<FontManager>();
+
+            //spriteBatch.DrawString(fontManager.getFont(FontManager.fontStyle.title), _fps.ToString(), new Vector2(0, 0), Color.Yellow);
+
             _spriteBatch.End();
 
             base.Draw(gameTime);

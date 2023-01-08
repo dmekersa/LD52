@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using LD52;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -26,17 +27,38 @@ internal class SceneWin : Scene
 
     public override void Draw()
     {
+        SpriteBatch spriteBatch = ServiceLocator.GetService<SpriteBatch>();
+        FontManager fontManager = ServiceLocator.GetService<FontManager>();
+        SpriteFont font = fontManager.getFont(FontManager.fontStyle.title);
+
+        Vector2 size;
+
+        string text;
+        int y = 20;
+
+        text = "Your time: " + GameState.lastTime.ToString() + "s";
+        size = font.MeasureString(text);
+        spriteBatch.DrawString(font, text, new Vector2((200 - size.X) / 2, y), Color.White);
+
+        y += 20;
+        text = "Your harvest: " + GameState.lastPercent.ToString() + "%";
+        size = font.MeasureString(text);
+        spriteBatch.DrawString(font, text, new Vector2((200 - size.X) / 2, y), Color.White);
+
+        y += 20;
+        text = "Dead chickens: " + GameState.lastChicken.ToString() + "";
+        size = font.MeasureString(text);
+        spriteBatch.DrawString(font, text, new Vector2((200 - size.X) / 2, y), Color.White);
+
+        y += 20;
+        text = "Best time 100%: " + GameState.bestTime.ToString() + "";
+        size = font.MeasureString(text);
+        spriteBatch.DrawString(font, text, new Vector2((200 - size.X) / 2, y), Color.White);
+
     }
 
     public override void DrawUI()
     {
-        SpriteBatch spriteBatch = ServiceLocator.GetService<SpriteBatch>();
-        FontManager fontManager = ServiceLocator.GetService<FontManager>();
-
-        if (spriteBatch != null && fontManager != null)
-        {
-            spriteBatch.DrawString(fontManager.getFont(FontManager.fontStyle.title), "YOU WON", new Vector2(0, 0), Color.Yellow);
-        }
 
     }
 }

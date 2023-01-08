@@ -13,13 +13,21 @@ namespace LD52
         public bool justArrived { get; private set; }
         private float _distanceX;
         private float _distanceY;
+        private string _lastDirection = "";
+        private float _fadeInSpeed;
+        public string state;
+        public double stateTime;
+        public bool stateDone { get; private set; }
 
         public Spr8x8(int pSpr, int pRow, int pCol) : base(pSpr, new Vector2(pCol * 8, pRow * 8))
         {
-            row = pRow;
-            rowDest = pRow;
-            col = pCol;
-            colDest = pCol;
+            SetMapPosition(pRow, pCol);
+        }
+
+        public void FadeIn(float pSpeed)
+        {
+            Alpha = 0;
+            _fadeInSpeed = pSpeed;
         }
 
         public void SetMapPosition(int pRow, int pCol)
@@ -30,7 +38,6 @@ namespace LD52
             col = pCol;
             rowDest = pRow;
             colDest = pCol;
-
         }
 
         public void GoTo(int pRow, int pCol)
@@ -45,49 +52,58 @@ namespace LD52
 
         public string getDirection()
         {
-            if (col < colDest)
-            {
-                return "right";
-            }
-            if (col > colDest)
-            {
-                return "left";
-            }
-            if (row < rowDest)
-            {
-                return "down";
-            }
-            if (row > rowDest)
-            {
-                return "up";
-            }
-            return "";
+            return _lastDirection;
         }
 
-        public override void Update()
+        public bool AtDestination()
         {
-            base.Update();
+            return col == colDest && row == rowDest;
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+
+            if (stateTime > 0)
+            {
+                stateTime -= gameTime.ElapsedGameTime.TotalMilliseconds;
+                if (stateTime <= 0)
+                    stateDone = true;
+            }
+            else
+                stateDone = false;
+
+            if (_fadeInSpeed > 0 && Alpha < 1)
+            {
+                Alpha += _fadeInSpeed;
+            }
 
             Vector2 currentPos = Position;
             if (col < colDest)
             {
                 Move(speed, 0);
                 _distanceX += speed;
+                _lastDirection = "right";
+                FlipX = false;
             }
             if (col > colDest)
             {
                 Move(-speed, 0);
                 _distanceX += speed;
+                _lastDirection = "left";
+                FlipX = true;
             }
             if (row < rowDest)
             {
                 Move(0, speed);
                 _distanceY += speed;
+                _lastDirection = "down";
             }
             if (row > rowDest)
             {
                 Move(0, -speed);
                 _distanceY += speed;
+                _lastDirection = "up";
             }
             if (currentPos != Position)
             {
@@ -99,8 +115,7 @@ namespace LD52
                 if (_distanceX >= 8 || _distanceY >= 8)
                 {
                     moving = false;
-                    col = colDest;
-                    row = rowDest;
+                    SetMapPosition(rowDest, colDest);
                     _distanceX = 0;
                     _distanceY = 0;
                     justArrived = true;

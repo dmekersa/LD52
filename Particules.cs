@@ -11,11 +11,11 @@ namespace LD52
             public float vy;
             public double life;
 
-            public void Update(double pTime)
+            public void Update(GameTime gameTime)
             {
-                life -= pTime;
+                life -= gameTime.ElapsedGameTime.TotalSeconds;
                 Move(vx, vy);
-                base.Update();
+                base.Update(gameTime);
             }
         }
 
@@ -48,7 +48,7 @@ namespace LD52
             for (int n = lstParticules.Count - 1; n >= 0; n--)
             {
                 Particule p = lstParticules[n];
-                p.Update(gameTime.ElapsedGameTime.TotalSeconds);
+                p.Update(gameTime);
                 if (p.life <= 0)
                 {
                     lstParticules.Remove(p);

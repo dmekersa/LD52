@@ -48,6 +48,8 @@ public class SceneManager : SceneService
 
         if (_currentScene.loaded == false)
             _currentScene.Load();
+
+        _currentScene.Focus();
     }
 
     public void Update(GameTime gameTime)
