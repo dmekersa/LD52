@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 internal class SceneMenu : Scene
 {
-    const string version = "1.0";
+    const string version = "1.0b";
 
     List<Spr8x8> lstChickens;
     float sin = 0;

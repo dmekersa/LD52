@@ -170,6 +170,7 @@ internal class SceneGameplay : Scene
             }
         }
 
+        _objective = 0;
         _harvested = 0;
         for (int l = 0 + 1; l < MAPH - 1; l++)
         {
@@ -209,6 +210,7 @@ internal class SceneGameplay : Scene
 
         if (HP == 0)
         {
+            sndGameover.Play();
             UpdateGameState();
             _sceneService.ChangeScene(SceneManager.sceneType.Win);
         }
@@ -328,13 +330,15 @@ internal class SceneGameplay : Scene
             }
         }
 
-        if (_harvested == _objective && timerWin == 0)//_objective)
+        if (_harvested >= _objective && timerWin == 0)//_objective)
         {
             sndWin.Play();
             timerWin = 2;
             Explosion(40, 40, 100);
 
             UpdateGameState();
+            _sceneService.ChangeScene(SceneManager.sceneType.Win);
+
         }
 
         // Collisions with ballots
@@ -365,6 +369,7 @@ internal class SceneGameplay : Scene
                     GameState.camShake = 0.4f;
                     Life();
                     lstChickens.Remove(c);
+                    deadChickens++;
                 }
                 else if (c.AtDestination())
                 {
